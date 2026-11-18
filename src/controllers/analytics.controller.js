@@ -6,37 +6,57 @@ export async function getOwnerAnalytics(req, res, next) {
     const ownerId = req.user.id;
     const equipmentCollection = getCollection("equipment");
     const bookingsCollection = getCollection("bookings");
+    const paymentsCollection = getCollection("payments");
 
     const totalEquipment = await equipmentCollection.countDocuments({ ownerId });
     const activeRentals = await bookingsCollection.countDocuments({
       ownerId,
       status: "Active",
     });
+    const completedRentals = await bookingsCollection.countDocuments({
+      ownerId,
+      status: "Completed",
+    });
     const pendingRequests = await bookingsCollection.countDocuments({
       ownerId,
       status: "Pending",
     });
 
-    // Calculate total earnings from Confirmed or Completed bookings
-    const earningsAgg = await bookingsCollection
+    // Calculate total earnings from payments collection or confirmed/completed bookings
+    const paymentsAgg = await paymentsCollection
       .aggregate([
-        {
-          $match: {
-            ownerId,
-            status: { $in: ["Confirmed", "Active", "Completed"] },
-          },
-        },
+        { $match: { ownerId } },
         {
           $group: {
             _id: null,
             totalEarnings: { $sum: "$rentalFee" },
-            totalBookings: { $sum: 1 },
+            totalTransactions: { $sum: 1 },
           },
         },
       ])
       .toArray();
 
-    const totalEarnings = earningsAgg[0]?.totalEarnings || 0;
+    // Fallback to bookings if payments collection not yet populated
+    let totalEarnings = paymentsAgg[0]?.totalEarnings || 0;
+    if (totalEarnings === 0) {
+      const bookingsAgg = await bookingsCollection
+        .aggregate([
+          {
+            $match: {
+              ownerId,
+              status: { $in: ["Confirmed", "Active", "Completed"] },
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              totalEarnings: { $sum: "$rentalFee" },
+            },
+          },
+        ])
+        .toArray();
+      totalEarnings = bookingsAgg[0]?.totalEarnings || 0;
+    }
 
     // Monthly earnings chart data for last 6 months
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -87,6 +107,7 @@ export async function getOwnerAnalytics(req, res, next) {
       data: {
         totalEquipment,
         activeRentals,
+        completedRentals,
         pendingRequests,
         totalEarnings,
         monthlyData,
@@ -104,30 +125,51 @@ export async function getAdminAnalytics(req, res, next) {
     const usersCollection = getCollection("user");
     const equipmentCollection = getCollection("equipment");
     const bookingsCollection = getCollection("bookings");
+    const paymentsCollection = getCollection("payments");
 
     const totalUsers = await usersCollection.countDocuments();
     const totalEquipment = await equipmentCollection.countDocuments();
     const totalBookings = await bookingsCollection.countDocuments();
+    const pendingApprovals = await equipmentCollection.countDocuments({ status: "Pending" });
+    const completedRentals = await bookingsCollection.countDocuments({ status: "Completed" });
 
-    const revenueAgg = await bookingsCollection
+    // Aggregate from payments collection
+    const paymentsAgg = await paymentsCollection
       .aggregate([
-        {
-          $match: {
-            status: { $in: ["Confirmed", "Active", "Completed"] },
-          },
-        },
         {
           $group: {
             _id: null,
-            totalGross: { $sum: "$totalAmount" },
+            totalGross: { $sum: "$amount" },
             totalServiceFees: { $sum: "$serviceFee" },
           },
         },
       ])
       .toArray();
 
-    const totalRevenue = revenueAgg[0]?.totalGross || 0;
-    const totalPlatformFee = revenueAgg[0]?.totalServiceFees || 0;
+    let totalRevenue = paymentsAgg[0]?.totalGross || 0;
+    let totalPlatformFee = paymentsAgg[0]?.totalServiceFees || 0;
+
+    // Fallback if payments collection is fresh
+    if (totalRevenue === 0) {
+      const revenueAgg = await bookingsCollection
+        .aggregate([
+          {
+            $match: {
+              status: { $in: ["Confirmed", "Active", "Completed"] },
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              totalGross: { $sum: "$totalAmount" },
+              totalServiceFees: { $sum: "$serviceFee" },
+            },
+          },
+        ])
+        .toArray();
+      totalRevenue = revenueAgg[0]?.totalGross || 0;
+      totalPlatformFee = revenueAgg[0]?.totalServiceFees || 0;
+    }
 
     // Category distribution
     const categoryDistribution = await equipmentCollection
@@ -187,6 +229,8 @@ export async function getAdminAnalytics(req, res, next) {
         totalUsers,
         totalEquipment,
         totalBookings,
+        pendingApprovals,
+        completedRentals,
         totalRevenue,
         totalPlatformFee,
         categoryDistribution,
