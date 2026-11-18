@@ -7,6 +7,8 @@ export async function getAllEquipment(req, res, next) {
     const {
       search,
       category,
+      rentalType,
+      location,
       minPrice,
       maxPrice,
       rating,
@@ -35,6 +37,21 @@ export async function getAllEquipment(req, res, next) {
       query.category = { $regex: new RegExp(`^${category}$`, "i") };
     }
 
+    if (rentalType && rentalType !== "All") {
+      query.rentalType = { $regex: new RegExp(`^${rentalType}$`, "i") };
+    }
+
+    if (location && location.trim() !== "") {
+      const loc = location.trim();
+      query.$or = query.$or || [];
+      query.$or.push(
+        { "location.city": { $regex: loc, $options: "i" } },
+        { "location.state": { $regex: loc, $options: "i" } },
+        { "location.address": { $regex: loc, $options: "i" } },
+        { locationString: { $regex: loc, $options: "i" } }
+      );
+    }
+
     if (availability !== undefined && availability !== "") {
       query.availability = availability === "true" || availability === true;
     }
@@ -49,17 +66,29 @@ export async function getAllEquipment(req, res, next) {
       query.rating = { $gte: Number(rating) };
     }
 
+    // Search by Equipment Name / Title or Location
     if (search && search.trim() !== "") {
       const searchTerm = search.trim();
-      query.$or = [
+      const searchConditions = [
         { title: { $regex: searchTerm, $options: "i" } },
+        { equipmentName: { $regex: searchTerm, $options: "i" } },
         { description: { $regex: searchTerm, $options: "i" } },
         { category: { $regex: searchTerm, $options: "i" } },
-        { "specifications.Brand": { $regex: searchTerm, $options: "i" } },
+        { brand: { $regex: searchTerm, $options: "i" } },
+        { model: { $regex: searchTerm, $options: "i" } },
+        { "location.city": { $regex: searchTerm, $options: "i" } },
+        { "location.state": { $regex: searchTerm, $options: "i" } },
       ];
+
+      if (query.$or) {
+        query.$and = [{ $or: query.$or }, { $or: searchConditions }];
+        delete query.$or;
+      } else {
+        query.$or = searchConditions;
+      }
     }
 
-    // Sort order
+    // Sort options: Price Low to High, Price High to Low, Recently Added
     let sortOptions = { createdAt: -1 };
     if (sort === "price-asc") {
       sortOptions = { pricePerDay: 1 };
@@ -69,6 +98,8 @@ export async function getAllEquipment(req, res, next) {
       sortOptions = { rating: -1, totalReviews: -1 };
     } else if (sort === "popular") {
       sortOptions = { totalBookings: -1, rating: -1 };
+    } else if (sort === "recently-added" || sort === "newest") {
+      sortOptions = { createdAt: -1 };
     }
 
     const pageNum = Math.max(1, parseInt(page, 10));
@@ -101,13 +132,14 @@ export async function getAllEquipment(req, res, next) {
 }
 
 // GET /api/equipment/featured
+// Explicit Assignment Requirement: Display exactly 6 approved equipment items using MongoDB limit
 export async function getFeaturedEquipment(req, res, next) {
   try {
     const equipmentCollection = getCollection("equipment");
     const items = await equipmentCollection
       .find({ status: "Approved" })
       .sort({ rating: -1, totalReviews: -1, createdAt: -1 })
-      .limit(8)
+      .limit(6)
       .toArray();
 
     res.status(200).json({
@@ -137,7 +169,6 @@ export async function getEquipmentById(req, res, next) {
       return res.status(404).json({ success: false, message: "Equipment not found" });
     }
 
-    // Also get reviews for this equipment
     const reviewsCollection = getCollection("reviews");
     const reviews = await reviewsCollection
       .find({ equipmentId: id })
@@ -162,43 +193,60 @@ export async function createEquipment(req, res, next) {
   try {
     const {
       title,
+      equipmentName,
       category,
       description,
       images,
       pricePerDay,
-      securityDeposit,
+      rentalPrice,
+      rentalType = "Daily",
+      securityDeposit = 0,
+      availableQuantity = 1,
       specifications,
-      condition,
+      condition = "Excellent",
+      brand = "",
+      model = "",
       location,
+      rentalTerms = "Standard commercial rental terms apply. Operator ID and deposit required upon delivery.",
       availability = true,
     } = req.body;
 
-    if (!title || !category || !pricePerDay) {
+    const finalTitle = (title || equipmentName || "").trim();
+    const finalPrice = Number(pricePerDay || rentalPrice);
+
+    if (!finalTitle || !category || !finalPrice) {
       return res.status(400).json({
         success: false,
-        message: "Title, category, and pricePerDay are required fields",
+        message: "Equipment Name, category, and rental price are required fields",
       });
     }
 
     const equipmentCollection = getCollection("equipment");
 
     const newEquipment = {
-      title: title.trim(),
+      title: finalTitle,
+      equipmentName: finalTitle,
       category: category.trim(),
-      description: description || "",
+      description: description ? description.trim() : "",
       images: Array.isArray(images) && images.length > 0 ? images : [
         "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80"
       ],
-      pricePerDay: Number(pricePerDay),
+      pricePerDay: finalPrice,
+      rentalPrice: finalPrice,
+      rentalType: rentalType || "Daily",
       securityDeposit: Number(securityDeposit || 0),
+      availableQuantity: Number(availableQuantity || 1),
       specifications: specifications || {},
       condition: condition || "Excellent",
-      location: location || { city: "New York", state: "NY", address: "Main Hub" },
+      brand: brand || "",
+      model: model || "",
+      location: location || { city: "Austin", state: "TX", address: "Commercial Fleet Depot" },
+      rentalTerms: rentalTerms || "Refundable damage deposit required. Certified operator only.",
       availability: Boolean(availability),
       ownerId: req.user.id,
       ownerName: req.user.name || "Equipment Owner",
       ownerEmail: req.user.email,
-      status: "Approved", // Auto-approved for frictionless demo & assignment grading, can be moderated by Admin
+      status: "Pending", // Default pending per assignment requirement
       isFeatured: false,
       rating: 5.0,
       totalReviews: 0,
@@ -211,7 +259,7 @@ export async function createEquipment(req, res, next) {
 
     res.status(201).json({
       success: true,
-      message: "Equipment listing created successfully",
+      message: "Equipment listing created successfully (Pending Admin Review)",
       data: { _id: result.insertedId, ...newEquipment },
     });
   } catch (err) {
@@ -219,7 +267,7 @@ export async function createEquipment(req, res, next) {
   }
 }
 
-// PUT /api/equipment/:id (Owner of item or Admin)
+// PUT /api/equipment/:id
 export async function updateEquipment(req, res, next) {
   try {
     const { id } = req.params;
@@ -237,7 +285,6 @@ export async function updateEquipment(req, res, next) {
       return res.status(404).json({ success: false, message: "Equipment not found" });
     }
 
-    // Permission check: must be owner or Admin
     if (existing.ownerId !== req.user.id && req.user.role !== "Admin") {
       return res.status(403).json({
         success: false,
@@ -247,11 +294,21 @@ export async function updateEquipment(req, res, next) {
 
     const updates = { ...req.body };
     delete updates._id;
-    delete updates.ownerId; // Never change ownerId
+    delete updates.ownerId;
     delete updates.createdAt;
     updates.updatedAt = new Date().toISOString();
 
-    if (updates.pricePerDay) updates.pricePerDay = Number(updates.pricePerDay);
+    if (updates.pricePerDay || updates.rentalPrice) {
+      const p = Number(updates.pricePerDay || updates.rentalPrice);
+      updates.pricePerDay = p;
+      updates.rentalPrice = p;
+    }
+    if (updates.title || updates.equipmentName) {
+      const t = updates.title || updates.equipmentName;
+      updates.title = t;
+      updates.equipmentName = t;
+    }
+    if (updates.availableQuantity) updates.availableQuantity = Number(updates.availableQuantity);
     if (updates.securityDeposit) updates.securityDeposit = Number(updates.securityDeposit);
 
     await equipmentCollection.updateOne(query, { $set: updates });
@@ -267,7 +324,7 @@ export async function updateEquipment(req, res, next) {
   }
 }
 
-// DELETE /api/equipment/:id (Owner of item or Admin)
+// DELETE /api/equipment/:id
 export async function deleteEquipment(req, res, next) {
   try {
     const { id } = req.params;
@@ -303,7 +360,7 @@ export async function deleteEquipment(req, res, next) {
   }
 }
 
-// PATCH /api/equipment/:id/status (Admin only)
+// PATCH /api/equipment/:id/status (Admin only: Approve/Reject)
 export async function updateEquipmentStatus(req, res, next) {
   try {
     const { id } = req.params;
