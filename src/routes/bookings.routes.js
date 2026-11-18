@@ -7,17 +7,21 @@ import {
   getBookingById,
   updateBookingStatus,
 } from "../controllers/bookings.controller.js";
-import { verifyAuth } from "../middleware/auth.js";
-import { requireRole } from "../middleware/role.js";
+import {
+  verifyToken,
+  verifyRenter,
+  verifyOwner,
+  verifyAdmin,
+} from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.use(verifyAuth); // All booking routes require authentication
+router.use(verifyToken); // All booking routes require authenticated token
 
-router.post("/", createBooking);
+router.post("/", verifyRenter, createBooking);
 router.get("/my-bookings", getMyBookings);
-router.get("/owner-bookings", requireRole("Owner", "Admin"), getOwnerBookings);
-router.get("/admin/all", requireRole("Admin"), getAdminBookings);
+router.get("/owner-bookings", verifyOwner, getOwnerBookings);
+router.get("/admin/all", verifyAdmin, getAdminBookings);
 router.get("/:id", getBookingById);
 router.patch("/:id/status", updateBookingStatus);
 
