@@ -8,24 +8,28 @@ import {
   getWishlist,
   toggleWishlist,
 } from "../controllers/users.controller.js";
-import { verifyAuth } from "../middleware/auth.js";
-import { requireRole } from "../middleware/role.js";
+import {
+  verifyToken,
+  verifyAdmin,
+} from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.use(verifyAuth);
+router.use(verifyToken);
 
-// Wishlist routes
+// Wishlist / Favorites routes
 router.get("/wishlist", getWishlist);
+router.get("/favorites", getWishlist);
 router.post("/wishlist/:equipmentId", toggleWishlist);
+router.post("/favorites/:equipmentId", toggleWishlist);
 
 // Profile routes
 router.get("/profile", getUserProfile);
 router.patch("/profile", updateUserProfile);
 
 // Admin user management routes
-router.get("/", requireRole("Admin"), getAllUsers);
-router.patch("/:id/role", requireRole("Admin"), updateUserRole);
-router.patch("/:id/status", requireRole("Admin"), updateUserStatus);
+router.get("/", verifyAdmin, getAllUsers);
+router.patch("/:id/role", verifyAdmin, updateUserRole);
+router.patch("/:id/status", verifyAdmin, updateUserStatus);
 
 export default router;
