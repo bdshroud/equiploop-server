@@ -11,7 +11,11 @@ function getJWKS() {
   return JWKS;
 }
 
-export async function verifyAuth(req, res, next) {
+/**
+ * Challenge 2 Requirement: verifyToken middleware
+ * Verifies JWT token from Authorization: Bearer <token> using JOSE against Next.js Better Auth JWKS endpoint
+ */
+export async function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
@@ -24,7 +28,6 @@ export async function verifyAuth(req, res, next) {
   const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
 
   try {
-    // Attempt strict verification with issuer and audience
     const { payload } = await jwtVerify(token, getJWKS(), {
       issuer: clientUrl,
       audience: clientUrl,
@@ -39,7 +42,6 @@ export async function verifyAuth(req, res, next) {
     };
     return next();
   } catch (err) {
-    // Graceful fallback for slight variations in trailing slash or audience
     try {
       const { payload } = await jwtVerify(token, getJWKS());
       req.user = {
@@ -61,6 +63,54 @@ export async function verifyAuth(req, res, next) {
   }
 }
 
+// Alias for verifyToken
+export const verifyAuth = verifyToken;
+
+/**
+ * Challenge 2: verifyRenter (Customer or higher)
+ */
+export function verifyRenter(req, res, next) {
+  if (!req.user) {
+    return res.status(401).json({ success: false, message: "Authentication required" });
+  }
+  const role = req.user.role || "Customer";
+  if (!["Customer", "Owner", "Admin"].includes(role)) {
+    return res.status(403).json({ success: false, message: "Renter/Customer access required" });
+  }
+  next();
+}
+
+/**
+ * Challenge 2: verifyOwner (Owner or Admin)
+ */
+export function verifyOwner(req, res, next) {
+  if (!req.user) {
+    return res.status(401).json({ success: false, message: "Authentication required" });
+  }
+  const role = req.user.role || "Customer";
+  if (!["Owner", "Admin"].includes(role)) {
+    return res.status(403).json({ success: false, message: "Owner role required for this action" });
+  }
+  next();
+}
+
+/**
+ * Challenge 2: verifyAdmin (Admin only)
+ */
+export function verifyAdmin(req, res, next) {
+  if (!req.user) {
+    return res.status(401).json({ success: false, message: "Authentication required" });
+  }
+  const role = req.user.role || "Customer";
+  if (role !== "Admin") {
+    return res.status(403).json({ success: false, message: "Admin privileges required" });
+  }
+  next();
+}
+
+/**
+ * Optional authentication middleware for public routes with personalized data
+ */
 export async function optionalAuth(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
