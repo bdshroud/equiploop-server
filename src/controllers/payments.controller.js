@@ -54,7 +54,7 @@ export async function createCheckoutSession(req, res, next) {
       return res.status(200).json({
         success: true,
         sessionId: mockSessionId,
-        url: `${clientUrl}/dashboard/rentals?payment=mock_success&bookingId=${bookingId}&session_id=${mockSessionId}`,
+        url: `${clientUrl}/payment-success?session_id=${mockSessionId}&bookingId=${bookingId}`,
         isMock: true,
       });
     }
@@ -84,7 +84,7 @@ export async function createCheckoutSession(req, res, next) {
         customerId: req.user.id,
         equipmentId: booking.equipmentId,
       },
-      success_url: `${clientUrl}/dashboard/rentals?payment=success&bookingId=${bookingId}&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${clientUrl}/payment-success?session_id={CHECKOUT_SESSION_ID}&bookingId=${bookingId}`,
       cancel_url: `${clientUrl}/dashboard/rentals?payment=cancelled&bookingId=${bookingId}`,
     });
 
@@ -117,6 +117,7 @@ export async function verifyPaymentSession(req, res, next) {
     const { bookingId } = req.query;
 
     const bookingsCollection = getCollection("bookings");
+    const paymentsCollection = getCollection("payments");
 
     // Handle mock payment for local development
     if (sessionId.startsWith("mock_sess_") && bookingId) {
@@ -127,19 +128,53 @@ export async function verifyPaymentSession(req, res, next) {
         return res.status(400).json({ success: false, message: "Invalid booking ID" });
       }
 
+      const booking = await bookingsCollection.findOne(query);
+      if (!booking) {
+        return res.status(404).json({ success: false, message: "Booking not found" });
+      }
+
+      const paidAt = new Date().toISOString();
       await bookingsCollection.updateOne(query, {
         $set: {
           paymentStatus: "Paid",
           status: "Confirmed",
-          paidAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+          paidAt,
+          updatedAt: paidAt,
         },
       });
 
+      // Record in payments collection
+      await paymentsCollection.updateOne(
+        { stripeSessionId: sessionId },
+        {
+          $set: {
+            bookingId: booking._id.toString(),
+            customerId: booking.customerId,
+            customerName: booking.customerName,
+            customerEmail: booking.customerEmail,
+            ownerId: booking.ownerId,
+            equipmentId: booking.equipmentId,
+            equipmentTitle: booking.equipmentTitle,
+            amount: booking.totalAmount,
+            rentalFee: booking.rentalFee,
+            serviceFee: booking.serviceFee,
+            securityDeposit: booking.securityDeposit,
+            stripeSessionId: sessionId,
+            stripePaymentIntentId: `pi_mock_${sessionId}`,
+            paymentMethod: "card",
+            status: "succeeded",
+            paidAt,
+            createdAt: paidAt,
+          },
+        },
+        { upsert: true }
+      );
+
       return res.status(200).json({
         success: true,
-        message: "Demo payment verified successfully",
+        message: "Payment successfully verified and recorded in payments collection",
         paymentStatus: "Paid",
+        booking: { ...booking, paymentStatus: "Paid", status: "Confirmed" },
       });
     }
 
@@ -152,18 +187,48 @@ export async function verifyPaymentSession(req, res, next) {
     if (session.payment_status === "paid") {
       const bId = session.metadata?.bookingId || bookingId || session.client_reference_id;
       if (bId) {
-        await bookingsCollection.updateOne(
-          { _id: new ObjectId(bId) },
-          {
-            $set: {
-              paymentStatus: "Paid",
-              status: "Confirmed",
-              stripePaymentIntentId: session.payment_intent,
-              paidAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
+        const query = { _id: new ObjectId(bId) };
+        const booking = await bookingsCollection.findOne(query);
+
+        const paidAt = new Date().toISOString();
+        await bookingsCollection.updateOne(query, {
+          $set: {
+            paymentStatus: "Paid",
+            status: "Confirmed",
+            stripePaymentIntentId: session.payment_intent,
+            paidAt,
+            updatedAt: paidAt,
+          },
+        });
+
+        // Record in payments collection
+        if (booking) {
+          await paymentsCollection.updateOne(
+            { stripeSessionId: session.id },
+            {
+              $set: {
+                bookingId: booking._id.toString(),
+                customerId: booking.customerId,
+                customerName: booking.customerName,
+                customerEmail: booking.customerEmail,
+                ownerId: booking.ownerId,
+                equipmentId: booking.equipmentId,
+                equipmentTitle: booking.equipmentTitle,
+                amount: booking.totalAmount,
+                rentalFee: booking.rentalFee,
+                serviceFee: booking.serviceFee,
+                securityDeposit: booking.securityDeposit,
+                stripeSessionId: session.id,
+                stripePaymentIntentId: session.payment_intent,
+                paymentMethod: "card",
+                status: "succeeded",
+                paidAt,
+                createdAt: paidAt,
+              },
             },
-          }
-        );
+            { upsert: true }
+          );
+        }
       }
 
       return res.status(200).json({
@@ -207,6 +272,10 @@ export async function handleStripeWebhook(req, res) {
     if (bookingId) {
       try {
         const bookingsCollection = getCollection("bookings");
+        const paymentsCollection = getCollection("payments");
+        const booking = await bookingsCollection.findOne({ _id: new ObjectId(bookingId) });
+
+        const paidAt = new Date().toISOString();
         await bookingsCollection.updateOne(
           { _id: new ObjectId(bookingId) },
           {
@@ -214,12 +283,41 @@ export async function handleStripeWebhook(req, res) {
               paymentStatus: "Paid",
               status: "Confirmed",
               stripePaymentIntentId: session.payment_intent,
-              paidAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
+              paidAt,
+              updatedAt: paidAt,
             },
           }
         );
-        console.log(`[Stripe Webhook] Booking ${bookingId} confirmed & marked Paid.`);
+
+        if (booking) {
+          await paymentsCollection.updateOne(
+            { stripeSessionId: session.id },
+            {
+              $set: {
+                bookingId: booking._id.toString(),
+                customerId: booking.customerId,
+                customerName: booking.customerName,
+                customerEmail: booking.customerEmail,
+                ownerId: booking.ownerId,
+                equipmentId: booking.equipmentId,
+                equipmentTitle: booking.equipmentTitle,
+                amount: booking.totalAmount,
+                rentalFee: booking.rentalFee,
+                serviceFee: booking.serviceFee,
+                securityDeposit: booking.securityDeposit,
+                stripeSessionId: session.id,
+                stripePaymentIntentId: session.payment_intent,
+                paymentMethod: "card",
+                status: "succeeded",
+                paidAt,
+                createdAt: paidAt,
+              },
+            },
+            { upsert: true }
+          );
+        }
+
+        console.log(`[Stripe Webhook] Booking ${bookingId} confirmed & recorded in payments collection.`);
       } catch (dbErr) {
         console.error("[Stripe Webhook DB Error]:", dbErr.message);
       }
