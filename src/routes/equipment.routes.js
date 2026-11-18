@@ -8,8 +8,12 @@ import {
   deleteEquipment,
   updateEquipmentStatus,
 } from "../controllers/equipment.controller.js";
-import { verifyAuth, optionalAuth } from "../middleware/auth.js";
-import { requireRole } from "../middleware/role.js";
+import {
+  verifyToken,
+  verifyOwner,
+  verifyAdmin,
+  optionalAuth,
+} from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -19,11 +23,11 @@ router.get("/featured", getFeaturedEquipment);
 router.get("/:id", optionalAuth, getEquipmentById);
 
 // Owner protected routes
-router.post("/", verifyAuth, requireRole("Owner", "Admin"), createEquipment);
-router.put("/:id", verifyAuth, updateEquipment);
-router.delete("/:id", verifyAuth, deleteEquipment);
+router.post("/", verifyToken, verifyOwner, createEquipment);
+router.put("/:id", verifyToken, updateEquipment);
+router.delete("/:id", verifyToken, deleteEquipment);
 
 // Admin moderation route
-router.patch("/:id/status", verifyAuth, requireRole("Admin"), updateEquipmentStatus);
+router.patch("/:id/status", verifyToken, verifyAdmin, updateEquipmentStatus);
 
 export default router;
