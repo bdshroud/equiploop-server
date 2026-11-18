@@ -1,0 +1,23 @@
+{
+  "name": "equiploop-server",
+  "version": "1.0.0",
+  "description": "EquipLoop Express.js Backend API with Native MongoDB Driver, JOSE & Stripe",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jose": "^5.9.6",
+    "mongodb": "^6.13.0",
+    "node-cron": "^3.0.3",
+    "stripe": "^17.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
