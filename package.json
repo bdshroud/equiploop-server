@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "seed": "node src/seed/seedData.js",
+    "test": "node -c src/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
