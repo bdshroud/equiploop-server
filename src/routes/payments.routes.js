@@ -3,11 +3,11 @@ import {
   createCheckoutSession,
   verifyPaymentSession,
 } from "../controllers/payments.controller.js";
-import { verifyAuth } from "../middleware/auth.js";
+import { verifyToken } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/create-checkout-session", verifyAuth, createCheckoutSession);
-router.get("/verify-session/:sessionId", verifyAuth, verifyPaymentSession);
+router.post("/create-checkout-session", verifyToken, createCheckoutSession);
+router.get("/verify-session/:sessionId", verifyToken, verifyPaymentSession);
 
 export default router;
