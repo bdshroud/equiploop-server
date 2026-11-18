@@ -3,14 +3,17 @@ import {
   getOwnerAnalytics,
   getAdminAnalytics,
 } from "../controllers/analytics.controller.js";
-import { verifyAuth } from "../middleware/auth.js";
-import { requireRole } from "../middleware/role.js";
+import {
+  verifyToken,
+  verifyOwner,
+  verifyAdmin,
+} from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.use(verifyAuth);
+router.use(verifyToken);
 
-router.get("/owner", requireRole("Owner", "Admin"), getOwnerAnalytics);
-router.get("/admin", requireRole("Admin"), getAdminAnalytics);
+router.get("/owner", verifyOwner, getOwnerAnalytics);
+router.get("/admin", verifyAdmin, getAdminAnalytics);
 
 export default router;
