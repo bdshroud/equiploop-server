@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import { getCollection } from "../config/db.js";
+import { sendBookingCompletedEmail } from "../services/email.service.js";
 
 // POST /api/bookings
 export async function createBooking(req, res, next) {
@@ -135,12 +136,40 @@ export async function createBooking(req, res, next) {
   }
 }
 
-// GET /api/bookings/my-bookings (Customer)
+// GET /api/bookings/my-bookings (Customer) with optional pagination
 export async function getMyBookings(req, res, next) {
   try {
+    const { page, limit } = req.query;
     const bookingsCollection = getCollection("bookings");
+    const query = { customerId: req.user.id };
+
+    if (page || limit) {
+      const pageNum = Math.max(1, parseInt(page || "1", 10));
+      const pageSize = Math.max(1, Math.min(100, parseInt(limit || "10", 10)));
+      const skip = (pageNum - 1) * pageSize;
+
+      const total = await bookingsCollection.countDocuments(query);
+      const bookings = await bookingsCollection
+        .find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(pageSize)
+        .toArray();
+
+      return res.status(200).json({
+        success: true,
+        data: bookings,
+        pagination: {
+          total,
+          page: pageNum,
+          limit: pageSize,
+          totalPages: Math.ceil(total / pageSize),
+        },
+      });
+    }
+
     const bookings = await bookingsCollection
-      .find({ customerId: req.user.id })
+      .find(query)
       .sort({ createdAt: -1 })
       .toArray();
 
@@ -305,6 +334,13 @@ export async function updateBookingStatus(req, res, next) {
 
     await bookingsCollection.updateOne(query, { $set: updateDoc });
     const updated = await bookingsCollection.findOne(query);
+
+    // Requirement 4: Automated email notification upon booking completion
+    if (status === "Completed" && updated) {
+      sendBookingCompletedEmail(updated).catch((err) =>
+        console.error(`[Bookings Controller] Failed to send completion email for ${updated._id}:`, err.message)
+      );
+    }
 
     res.status(200).json({
       success: true,
