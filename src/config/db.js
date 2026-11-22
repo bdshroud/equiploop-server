@@ -8,28 +8,51 @@ const dbName = process.env.DB_NAME || "equiploop";
 
 let client = null;
 let db = null;
+let indexesInitialized = false;
+
+function isClientDead(c) {
+  if (!c) return true;
+  if (c.s?.hasBeenClosed) return true;
+  if (c.topology == null && c.s?.hasBeenClosed) return true;
+  if (c.topology?.isDestroyed?.()) return true;
+  if (c.topology?.s?.state === "closed") return true;
+  return false;
+}
 
 export async function connectDB() {
-  if (db) return db;
+  if (db && !isClientDead(client)) {
+    return db;
+  }
+
+  if (isClientDead(client)) {
+    try {
+      client?.close().catch(() => {});
+    } catch {}
+    client = null;
+    db = null;
+  }
 
   try {
     if (!client) {
       client = new MongoClient(uri, {
         maxPoolSize: 10,
-        serverSelectionTimeoutMS: 5000,
-        connectTimeoutMS: 10000,
       });
     }
     await client.connect();
     db = client.db(dbName);
     console.log(`[MongoDB] Connected to database: "${dbName}"`);
 
-    // Ensure collections and necessary indexes
-    await initIndexes(db);
+    // Ensure collections and necessary indexes once per container lifecycle
+    if (!indexesInitialized) {
+      await initIndexes(db);
+      indexesInitialized = true;
+    }
 
     return db;
   } catch (error) {
     console.error("[MongoDB] Connection error:", error);
+    client = null;
+    db = null;
     throw error;
   }
 }

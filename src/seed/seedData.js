@@ -342,8 +342,8 @@ export const SAMPLE_EQUIPMENT = [
   },
 ];
 
-import { NEW_20_EQUIPMENT } from "./add20Equipment.js";
-export const ALL_SAMPLE_EQUIPMENT = [...SAMPLE_EQUIPMENT, ...NEW_20_EQUIPMENT];
+import { ALL_48_EQUIPMENT } from "./seedAllEquipment.js";
+export const ALL_SAMPLE_EQUIPMENT = ALL_48_EQUIPMENT;
 
 export async function seedDatabase() {
   const client = new MongoClient(uri);

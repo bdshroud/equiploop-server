@@ -854,4 +854,7 @@ async function insert20Equipment() {
   }
 }
 
-insert20Equipment().then(() => process.exit(0));
+// Only execute when run directly from CLI (never when imported)
+if (process.argv[1]?.endsWith("add20Equipment.js")) {
+  insert20Equipment().then(() => process.exit(0));
+}
