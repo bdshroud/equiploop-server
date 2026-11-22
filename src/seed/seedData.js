@@ -342,6 +342,9 @@ export const SAMPLE_EQUIPMENT = [
   },
 ];
 
+import { NEW_20_EQUIPMENT } from "./add20Equipment.js";
+export const ALL_SAMPLE_EQUIPMENT = [...SAMPLE_EQUIPMENT, ...NEW_20_EQUIPMENT];
+
 export async function seedDatabase() {
   const client = new MongoClient(uri);
   try {
@@ -351,8 +354,8 @@ export async function seedDatabase() {
 
     const count = await equipmentCol.countDocuments();
     if (count === 0) {
-      await equipmentCol.insertMany(SAMPLE_EQUIPMENT);
-      console.log(`[Seed] Seeded ${SAMPLE_EQUIPMENT.length} equipment items across assignment categories.`);
+      await equipmentCol.insertMany(ALL_SAMPLE_EQUIPMENT);
+      console.log(`[Seed] Seeded ${ALL_SAMPLE_EQUIPMENT.length} equipment items across assignment categories.`);
     } else {
       console.log(`[Seed] Database already contains ${count} equipment items.`);
     }
