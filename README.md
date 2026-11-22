@@ -2,8 +2,8 @@
 
 Backend API service for **EquipLoop** (Programming Hero Assignment 9 — Category 003).
 
-- **Live API Endpoint:** `https://api.equiploop.com/api` (Placeholder / Deployment Target)
-- **Live Client URL:** `https://equiploop.vercel.app` (Placeholder / Deployment Target)
+- **Live Client URL:** https://equiploop-client.vercel.app
+- **Live Server API:** https://equiploop-server.vercel.app
 
 ---
 
@@ -51,7 +51,6 @@ CLIENT_URL=http://localhost:3000
 DB_URI=mongodb://localhost:27017
 DB_NAME=equiploop
 STRIPE_SECRET_KEY=sk_test_placeholder
-STRIPE_WEBHOOK_SECRET=whsec_placeholder
 ```
 
 ---
