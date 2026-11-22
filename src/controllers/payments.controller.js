@@ -250,15 +250,20 @@ export async function verifyPaymentSession(req, res, next) {
 
 // POST /api/payments/webhook
 export async function handleStripeWebhook(req, res) {
-  const sig = req.headers["stripe-signature"];
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!webhookSecret) {
+    // Webhooks are not used; verification is handled via verifyPaymentSession
+    return res.status(200).json({ received: true, note: "Webhooks not configured" });
+  }
+
+  const sig = req.headers["stripe-signature"];
 
   let event;
   try {
-    if (webhookSecret && webhookSecret !== "whsec_placeholder") {
+    if (webhookSecret !== "whsec_placeholder") {
       event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
     } else {
-      event = req.body;
+      event = JSON.parse(req.body.toString("utf8"));
     }
   } catch (err) {
     console.error("[Stripe Webhook Signature Error]:", err.message);
