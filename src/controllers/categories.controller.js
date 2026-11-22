@@ -6,7 +6,7 @@ export const DEFAULT_CATEGORIES = [
     name: "Construction",
     description: "Concrete mixers, scaffolding, compactors, and demolition hammers.",
     icon: "HardHat",
-    image: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80",
   },
   {
     slug: "heavy-machinery",
@@ -27,7 +27,7 @@ export const DEFAULT_CATEGORIES = [
     name: "Landscaping & Gardening",
     description: "Wood chippers, lawn aerators, sod cutters, and commercial mowers.",
     icon: "Trees",
-    image: "https://images.unsplash.com/photo-1558904541-efa8c4a08931?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1557429287-b2e26467fc2b?auto=format&fit=crop&w=800&q=80",
   },
   {
     slug: "audio-visual",
