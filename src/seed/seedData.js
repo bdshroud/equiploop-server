@@ -23,7 +23,7 @@ export const SAMPLE_EQUIPMENT = [
     description: "Compact and powerful hydraulic mini excavator engineered for high productivity, tight radius earthmoving, trenching, and utility works. Features an enclosed pressurized cab with AC, hydraulic thumb, and quick-attach coupler.",
     images: [
       "https://images.unsplash.com/photo-1579847188804-ecba0e2ea330?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Caterpillar",
@@ -230,7 +230,7 @@ export const SAMPLE_EQUIPMENT = [
     rentalTerms: "Delivered in waterproof Pelican case with two rechargeable lithium batteries and calibration certificate.",
     description: "Non-contact thermal inspection camera with 640x480 IR resolution, 1-Touch Level/Span, laser-assisted autofocus, and temperature measurement up to 1500°C for electrical substations and industrial facilities.",
     images: [
-      "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "FLIR",
