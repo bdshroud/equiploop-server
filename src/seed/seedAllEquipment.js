@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
+import { ADDITIONAL_EQUIPMENT } from "./additionalEquipment.js";
 
 dotenv.config();
 
@@ -1840,6 +1841,8 @@ export const ALL_48_EQUIPMENT = [
   }
 ];
 
+export const ALL_EQUIPMENT = [...ALL_48_EQUIPMENT, ...ADDITIONAL_EQUIPMENT];
+
 export async function seedAllEquipment(shouldClean = false) {
   if (!uri) {
     console.error("[Seed Error] DB_URI is not defined");
@@ -1854,11 +1857,11 @@ export async function seedAllEquipment(shouldClean = false) {
     if (shouldClean) {
       console.log("[Seed] Cleaning existing collection for a clean slate of 48+ products...");
       await col.deleteMany({});
-      await col.insertMany(ALL_48_EQUIPMENT);
-      console.log(`[Seed] Successfully inserted all ${ALL_48_EQUIPMENT.length} unique equipment products!`);
+      await col.insertMany(ALL_EQUIPMENT);
+      console.log(`[Seed] Successfully inserted all ${ALL_EQUIPMENT.length} unique equipment products!`);
     } else {
       let upsertCount = 0;
-      for (const item of ALL_48_EQUIPMENT) {
+      for (const item of ALL_EQUIPMENT) {
         await col.updateOne(
           { title: item.title },
           { $set: item },
