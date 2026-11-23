@@ -24,8 +24,8 @@ router.get("/:id", optionalAuth, getEquipmentById);
 
 // Owner protected routes
 router.post("/", verifyToken, verifyOwner, createEquipment);
-router.put("/:id", verifyToken, updateEquipment);
-router.delete("/:id", verifyToken, deleteEquipment);
+router.put("/:id", verifyToken, verifyOwner, updateEquipment);
+router.delete("/:id", verifyToken, verifyOwner, deleteEquipment);
 
 // Admin moderation route
 router.patch("/:id/status", verifyToken, verifyAdmin, updateEquipmentStatus);

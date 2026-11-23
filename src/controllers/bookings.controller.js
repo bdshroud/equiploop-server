@@ -182,12 +182,40 @@ export async function getMyBookings(req, res, next) {
   }
 }
 
-// GET /api/bookings/owner-bookings (Owner)
+// GET /api/bookings/owner-bookings (Owner) with optional pagination
 export async function getOwnerBookings(req, res, next) {
   try {
+    const { page, limit } = req.query;
     const bookingsCollection = getCollection("bookings");
+    const query = { ownerId: req.user.id };
+
+    if (page || limit) {
+      const pageNum = Math.max(1, parseInt(page || "1", 10));
+      const pageSize = Math.max(1, Math.min(100, parseInt(limit || "10", 10)));
+      const skip = (pageNum - 1) * pageSize;
+
+      const total = await bookingsCollection.countDocuments(query);
+      const bookings = await bookingsCollection
+        .find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(pageSize)
+        .toArray();
+
+      return res.status(200).json({
+        success: true,
+        data: bookings,
+        pagination: {
+          total,
+          page: pageNum,
+          limit: pageSize,
+          totalPages: Math.ceil(total / pageSize),
+        },
+      });
+    }
+
     const bookings = await bookingsCollection
-      .find({ ownerId: req.user.id })
+      .find(query)
       .sort({ createdAt: -1 })
       .toArray();
 

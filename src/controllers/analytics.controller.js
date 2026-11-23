@@ -130,7 +130,9 @@ export async function getAdminAnalytics(req, res, next) {
     const totalUsers = await usersCollection.countDocuments();
     const totalEquipment = await equipmentCollection.countDocuments();
     const totalBookings = await bookingsCollection.countDocuments();
-    const pendingApprovals = await equipmentCollection.countDocuments({ status: "Pending" });
+    const pendingEquipment = await equipmentCollection.countDocuments({ status: "Pending" });
+    const pendingBookings = await bookingsCollection.countDocuments({ status: "Pending" });
+    const pendingApprovals = pendingEquipment + pendingBookings;
     const completedRentals = await bookingsCollection.countDocuments({ status: "Completed" });
 
     // Aggregate from payments collection
@@ -230,9 +232,12 @@ export async function getAdminAnalytics(req, res, next) {
         totalEquipment,
         totalBookings,
         pendingApprovals,
+        pendingEquipment,
+        pendingBookings,
         completedRentals,
         totalRevenue,
         totalPlatformFee,
+        monthlyBookingStats: revenueTrend,
         categoryDistribution,
         statusCounts,
         revenueTrend,

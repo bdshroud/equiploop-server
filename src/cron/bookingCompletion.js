@@ -5,13 +5,17 @@ import { sendBookingCompletedEmail } from "../services/email.service.js";
 export async function runBookingCompletionJob() {
   try {
     const now = new Date();
+    const todayStr = now.toISOString().split("T")[0];
     const bookingsCollection = getCollection("bookings");
 
-    // Find Confirmed bookings whose endDate has passed
+    // Find Confirmed or Active bookings whose rental endDate has passed
     const overdueBookings = await bookingsCollection
       .find({
-        status: "Confirmed",
-        endDate: { $lt: now.toISOString() },
+        status: { $in: ["Confirmed", "Active"] },
+        $or: [
+          { endDate: { $lt: todayStr } },
+          { endDate: { $lt: now.toISOString() } },
+        ],
       })
       .toArray();
 

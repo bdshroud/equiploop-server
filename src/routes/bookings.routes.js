@@ -19,7 +19,7 @@ const router = express.Router();
 router.use(verifyToken); // All booking routes require authenticated token
 
 router.post("/", verifyRenter, createBooking);
-router.get("/my-bookings", getMyBookings);
+router.get("/my-bookings", verifyRenter, getMyBookings);
 router.get("/owner-bookings", verifyOwner, getOwnerBookings);
 router.get("/admin/all", verifyAdmin, getAdminBookings);
 router.get("/:id", getBookingById);

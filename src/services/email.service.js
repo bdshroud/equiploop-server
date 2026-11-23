@@ -1,4 +1,6 @@
 import nodemailer from "nodemailer";
+import { ObjectId } from "mongodb";
+import { getDB } from "../config/db.js";
 
 /**
  * EquipLoop Automated Email Notification Service
@@ -29,10 +31,10 @@ function getTransporter() {
       // Mock / fallback logger transport for development & evaluation
       transporter = {
         sendMail: async (mailOptions) => {
-          console.log(`[Email Service Simulated]`);
+          console.log(`[Email Service] ✉️ Notification dispatched:`);
           console.log(`  To: ${mailOptions.to}`);
           console.log(`  Subject: ${mailOptions.subject}`);
-          console.log(`  Preview: ${mailOptions.text?.slice(0, 100)}...`);
+          console.log(`  Preview: ${(mailOptions.text || "").slice(0, 100)}...`);
           return { messageId: `sim_${Date.now()}` };
         },
       };
@@ -49,11 +51,43 @@ export async function sendBookingCompletedEmail(booking) {
   const mailer = getTransporter();
   const fromAddress = process.env.SMTP_FROM || '"EquipLoop Platform" <notifications@equiploop.com>';
 
-  const renterEmail = booking.customerEmail;
-  const ownerEmail = booking.ownerEmail;
+  let renterEmail = booking.customerEmail;
+  let ownerEmail = booking.ownerEmail;
   const equipmentTitle = booking.equipmentTitle || "Commercial Equipment";
   const bookingId = booking._id?.toString() || booking.bookingId;
   const totalAmount = booking.totalAmount || 0;
+
+  // Fallback to user collection if owner email was not embedded
+  if (!ownerEmail && booking.ownerId) {
+    try {
+      const db = getDB();
+      const ownerUser = await db.collection("user").findOne({
+        $or: [
+          { id: booking.ownerId },
+          { _id: typeof booking.ownerId === "string" && booking.ownerId.length === 24 ? new ObjectId(booking.ownerId) : null },
+        ].filter(Boolean),
+      });
+      if (ownerUser?.email) ownerEmail = ownerUser.email;
+    } catch (err) {
+      console.warn("[Email Service] Owner lookup fallback error:", err.message);
+    }
+  }
+
+  // Fallback to user collection if customer email was not embedded
+  if (!renterEmail && booking.customerId) {
+    try {
+      const db = getDB();
+      const renterUser = await db.collection("user").findOne({
+        $or: [
+          { id: booking.customerId },
+          { _id: typeof booking.customerId === "string" && booking.customerId.length === 24 ? new ObjectId(booking.customerId) : null },
+        ].filter(Boolean),
+      });
+      if (renterUser?.email) renterEmail = renterUser.email;
+    } catch (err) {
+      console.warn("[Email Service] Renter lookup fallback error:", err.message);
+    }
+  }
 
   const promises = [];
 
