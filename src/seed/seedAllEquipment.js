@@ -62,7 +62,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Operator must be certified. Return cleaned with full diesel tank.",
     description: "Versatile vertical-lift-path skid-steer loader designed for high lifting and heavy digging. Equipped with two-speed travel, enclosed heated/AC cab, hydraulic grapple attachment, and high-flow auxiliary hydraulics.",
     images: [
-      "https://images.unsplash.com/photo-1579847188804-ecba0e2ea330?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1584467735871-8e85353a8413?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Bobcat",
@@ -174,7 +174,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Return cleaned with full unleaded gasoline tank. Check engine oil prior to starting.",
     description: "High compaction performance reversible plate compactor designed for interlocking paving stones, trenches, paths, and asphalt patch works. Integrated transport wheels for effortless job site relocation.",
     images: [
-      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Wacker Neuson",
@@ -250,7 +250,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Must return in custom Pelican case with all CFexpress Type B media wiped.",
     description: "Hybrid cinema camera featuring internal 8K/60P Raw recording with continuous active cooling fan. Comes packaged with Canon RF 24-70mm f/2.8L IS USM lens, 2x 512GB cards, and dual battery charger.",
     images: [
-      "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Canon",
@@ -322,7 +322,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Return in specialized hard case. LiDAR range finder calibration must be maintained.",
     description: "Integrated full-frame 6K gimbal cinema camera featuring revolutionary 4-axis active stabilization, LiDAR autofocus system, wireless video transmission, and carbon fiber body.",
     images: [
-      "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "DJI",
@@ -435,7 +435,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Towing vehicle must have electric brake controller and 2-5/16 ball hitch.",
     description: "Tandem axle equipment trailer with 14,000 lbs GVWR, fold-up spring assist stand-up ramps, tie-down stake pockets, and treated pine wood floor. Ideal for transporting skid steers and mini excavators.",
     images: [
-      "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Big Tex",
@@ -472,7 +472,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Commercial driver license preferred. Mileage included: 150 miles/day ($0.45/mile overage).",
     description: "Rugged Duramax 6.6L V8 Turbo-Diesel utility service body truck with locking tool compartments, overhead ladder rack, heavy-duty tow receiver, and air compressor hookup.",
     images: [
-      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1551830820-330a71b99659?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Chevrolet",
@@ -509,7 +509,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Do not exceed gross axle ratings. Clean bed before return to avoid cleaning fees.",
     description: "Heavy tandem-axle commercial hydraulic dump trailer with scissor hoist, integrated roll tarp kit, 24-inch 10-gauge steel sides, and combo barn door/spreader gate.",
     images: [
-      "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "PJ Trailers",
@@ -546,7 +546,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Standard driver license. Return with same fuel level. Interior must be swept clean.",
     description: "High-roof extended cargo van with nearly 90-degree vertical walls and low cargo load floor height. Features cargo tie-downs, backup camera, and rear doors that open 260 degrees.",
     images: [
-      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "RAM",
@@ -622,7 +622,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Agricultural use only. Daily maintenance checks required (oil and coolant).",
     description: "Standard 4WD compact utility tractor featuring 37.3 hp turbocharged diesel engine and hydrostatic transmission with twin touch foot pedals. Comes standard with John Deere 300E front end loader.",
     images: [
-      "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1594498653385-d5172c532c00?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "John Deere",
@@ -659,7 +659,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Operate at designated PTO speeds. Wash undercarriage after soil cultivation.",
     description: "Reliable 37.5 hp diesel tractor engineered with bevel gear front axle for tight turn radius and smooth power transfer. Mounted with a Land Pride 60-inch heavy duty reverse-rotation rotary tiller.",
     images: [
-      "https://images.unsplash.com/photo-1590496793929-36417d3117de?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Kubota",
@@ -696,7 +696,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Watch for hidden stumps and rocks when shredding pastures. Clean air filter daily.",
     description: "Heavy-duty 53 hp farm tractor equipped with high-capacity hydraulic pump, synchro-shuttle transmission, and a 6-foot heavy-duty rotary cutter for clearing brush and overgrown fields.",
     images: [
-      "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "New Holland",
@@ -809,7 +809,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Calibrated unit. Handle with care in protective field bag. Do not point at open sun.",
     description: "Professional handheld thermography camera with 464 x 348 true IR resolution and 180-degree rotating optical block. Features laser-assisted autofocus and MSX image enhancement for electrical inspections.",
     images: [
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "FLIR",
@@ -959,7 +959,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Do not expose to rain or moisture. Return with padded transport slipcovers.",
     description: "All-in-one powered column PA system featuring an acoustically optimized 12-column array, 12-inch bass-reflex subwoofer, 2,000-watt Class-D amplifier, and built-in 7-channel digital mixer with Lexicon FX.",
     images: [
-      "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "JBL Professional",
@@ -996,7 +996,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Indoor or weather-protected outdoor use only. Heavy gauge PowerCON cables included.",
     description: "Concert-grade active line array sound package featuring four VRX932LAP 12-inch two-way powered tops and two VRX918SP 18-inch powered subwoofers with integrated Crown D-Class amplification.",
     images: [
-      "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "JBL Professional",
@@ -1032,7 +1032,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Includes dual road case, safety cables, and Omega brackets. DMX 5-pin cables provided.",
     description: "High-output RGBW LED moving head wash light with 19 x 25W quad-color LEDs. Features smooth 12° to 49° motorized zoom, individual zone control, and 16-bit dimming for festival productions.",
     images: [
-      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Chauvet Pro",
@@ -1105,7 +1105,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Load charts must be strictly observed. Connecting couplers and pins included.",
     description: "Professional 290mm (11.42 in) square aluminum rigging truss fabricated with conical coupling connectors for rapid and safe setup of lighting rigs, speaker clusters, and LED video walls.",
     images: [
-      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Global Truss",
@@ -1181,7 +1181,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Water source required for wet coring. Do not exceed 6-inch diameter bit ratings.",
     description: "Industry-first battery-powered handheld and stand core drill. Delivers maximum productivity for plumber and electrician pass-through penetrations in reinforced concrete and brick masonry.",
     images: [
-      "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1581092335878-2d9ff86ca2bf?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Milwaukee",
@@ -1218,7 +1218,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Use premixed 50:1 2-cycle gasoline only. Wet cutting attachment required to prevent silica dust.",
     description: "Powerful all-round power cutter with features that make it one of the best cut-off saws on the market. Outfitted with semi-automatic SmartTension system and DuraStarter sealed dust recoil.",
     images: [
-      "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Husqvarna",
@@ -1255,7 +1255,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Return in L-BOXX carrying case with both 8.0Ah batteries and fast charger.",
     description: "BITURBO Brushless cordless SDS-max hammer delivering 5.2 ft-lbs of impact energy. Features KickBack Control, soft start for smooth hole starts, and connectivity module for tool customization.",
     images: [
-      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Bosch",
@@ -1292,7 +1292,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Use designated heavy gauge 12-gauge extension cords. Return breaker cart with unit.",
     description: "Industry-leading 70 lb class electric breaker with Advanced AVT mechanical counterbalance system that reduces vibration up to 87%. Includes heavy-duty transport cart and bull point chisel.",
     images: [
-      "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Makita",
@@ -1479,7 +1479,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Water tank must be drained before freezing conditions. Clean sprinkler nozzles after paving.",
     description: "Compact dual-drum vibratory roller with 47.2-inch drum width. Pressurized water sprinkler system with dual scraper bars ensures smooth, lump-free asphalt compaction on driveways and parking areas.",
     images: [
-      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Bomag",
@@ -1592,7 +1592,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Indoor concrete surfaces only. Built-in 110V charger plugged in each night.",
     description: "Heavy-duty electric motorized pallet truck featuring cast-aluminum control handle, structural steel frame, and regenerative braking. Maneuvers easily in retail aisles and delivery trailers.",
     images: [
-      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Crown",
@@ -1629,7 +1629,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Flat slab surfaces only. Do not operate in high winds outdoors.",
     description: "Reliable, easy-to-service electric scissor lift with all-steel platform and active pothole protection system. Features 3-foot slide-out deck extension for extra workspace over obstacles.",
     images: [
-      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "JLG",
@@ -1666,7 +1666,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Lock out stabilizer legs before raising loads. Cable inspection check required.",
     description: "Portable manual material hoist engineered for lifting HVAC units, ductwork, steel beams, and heavy pipes up to 24 feet high. Compact fold-up design fits through standard doors and in pickup beds.",
     images: [
-      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Sumner",
@@ -1743,7 +1743,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Ultra-low sulfur diesel only. 120V/240V/480V selector switch lock out tag out rules apply.",
     description: "Whisper-quiet towable diesel generator engineered for continuous construction, municipal, and event standby power. Features sound-attenuated aluminum enclosure and 24+ hour run time fuel cell.",
     images: [
-      "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Generac",
@@ -1817,7 +1817,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Cam-Lok cable connections. Check DEF and engine oil levels before each work shift.",
     description: "Industry-standard WhisperWatt silent mobile diesel generator producing 56 kW (70 kVA) prime power. Equipped with digital controller, automatic start-stop capability, and environmental spill containment basin.",
     images: [
-      "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Multiquip",

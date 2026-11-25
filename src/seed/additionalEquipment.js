@@ -65,7 +65,7 @@ export const ADDITIONAL_EQUIPMENT = [
     rentalTerms: "Operator certification required. Return with a clean diesel tank and no unapproved attachments.",
     description: "Heavy-duty 4WD skid-steer loader built for contract work in tight sites and muddy conditions. Features a 14,000 lb rated operating capacity, two-range travel, and an enclosed heated cab for year-round utility.",
     images: [
-      "https://images.unsplash.com/photo-1579847188804-ecba0e2ea330?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Bobcat",
@@ -149,7 +149,7 @@ export const ADDITIONAL_EQUIPMENT = [
     rentalTerms: "Forklift operator certification required. Charge battery after each shift and follow load chart limits at all heights.",
     description: "Sit-down high-visibility forklift built for warehouse and dock operations, featuring a 3600 kg (7,937 lbs) rated capacity, 3,505 mm lift height, and a Pneumatic 18-inch tire system. Includes automatic slowdown brake.",
     images: [
-      "https://images.unsplash.com/photo-159003722824-194d4455a60c?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Crown Equipment",
@@ -192,8 +192,7 @@ export const ADDITIONAL_EQUIPMENT = [
     rentalTerms: "Operate at designated PTO speeds. Wash undercarriage after soil cultivation.",
     description: "Premium 4WD compact utility tractor with a 4-speed turbo diesel engine and a Category 1 three-point hitch. Suited for loader work, hauling, and trenching on smaller lots and orchards.",
     images: [
-      "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1579847188804-ecba0e2ea330?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Kubota",
