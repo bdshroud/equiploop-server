@@ -1331,7 +1331,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Lowboy trailer transport required. Certified heavy equipment operators only.",
     description: "Tight-tail-swing radius excavator optimized for road work, bridges, and urban utility installations. High stability design delivers lifting capacity equivalent to standard conventional excavators.",
     images: [
-      "https://images.unsplash.com/photo-1580983218765-f663bec07b37?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1508873696983-2df570464756?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Komatsu",
@@ -1405,7 +1405,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Lowboy freight arranged separately. Track wash required on project completion.",
     description: "Maneuverable finish grading crawler dozer with hydrostatic drive, Slope Assist automated blade control, and Power-Pitch variable angle-tilt 6-way blade for residential lot prep and slope grading.",
     images: [
-      "https://images.unsplash.com/photo-1580983218765-f663bec07b37?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1541888946425-d0fbb186f5f7?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Caterpillar",
@@ -1442,7 +1442,7 @@ export const ALL_48_EQUIPMENT = [
     rentalTerms: "Certified heavy machine operator only. Return with clean cab and full diesel & DEF tanks.",
     description: "Versatile mid-sized wheel loader featuring Volvo torque-parallel (TP) linkage, OptiShift technology with reverse by braking, and high breakout torque for aggregate handling and heavy stockpiling.",
     images: [
-      "https://images.unsplash.com/photo-1580983218765-f663bec07b37?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Volvo",

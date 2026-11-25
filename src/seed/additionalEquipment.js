@@ -22,7 +22,7 @@ export const ADDITIONAL_EQUIPMENT = [
     description: "High-power mining-style excavator engineered for deep cut and large volume removal in urban and quarry applications. Features a 26-ton operating weight, high-flow auxiliary hydraulics, and a robust 3.1 m³ bucket. Ideal for road widening, foundation work, and quarrying operations.",
     images: [
       "https://images.unsplash.com/photo-1579847188804-ecba0e2ea330?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1580983218765-f663bec07b37?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1541888946425-d0fbb186f5f7?auto=format&fit=crop&w=1200&q=80"
     ],
     specifications: {
       Brand: "Caterpillar",
